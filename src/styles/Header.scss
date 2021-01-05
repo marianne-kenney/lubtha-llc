@@ -1,0 +1,28 @@
+.main-header {
+  height: 100px;
+  border-bottom: 2px solid white;
+  background-color: black;
+
+  .main-logo {
+    height: 90px;
+    margin: 5px 10px;
+  }
+
+  .primary-tabs {
+    margin: 40px 20px;
+    float: right;
+
+    a, a:hover, a:focus {
+      color: #2D68DA;
+      font-weight: bold;
+      font-size: 16px;
+      text-decoration: none;
+      margin: 0 15px;
+      padding: 10px 5px;
+    }
+
+    a:focus {
+      border-bottom: 1px solid white;
+    }
+  }
+}
