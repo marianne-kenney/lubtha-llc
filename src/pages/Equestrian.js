@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import '../styles/Home.scss'
+import '../styles/Equestrian.scss'
 
-export default class HomePage extends Component {
+export default class EquestrianPage extends Component {
   constructor(props) {
     super(props);
 
@@ -11,8 +11,8 @@ export default class HomePage extends Component {
 
   render() {
     return (
-      <div className="home-page">
-        <p>Home - Coming soon!</p>
+      <div className="equestrian-page">
+        <p>Equestrian - Coming soon!</p>
       </div>
     );
   }
