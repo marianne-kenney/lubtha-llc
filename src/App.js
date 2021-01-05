@@ -5,6 +5,7 @@ import Header from './components/Header';
 import HomePage from './pages/Home';
 import SoftwareDevPage from './pages/SoftwareDev';
 import EquestrianPage from './pages/Equestrian';
+import ContactPage from './pages/Contact';
 
 export default function App() {
   return (
@@ -15,7 +16,7 @@ export default function App() {
         <Route path="/" exact><HomePage /></Route>
         <Route path="/software-development"><SoftwareDevPage /></Route>
         <Route path="/equestrian"><EquestrianPage /></Route>
-        <Route path="/about" />
+        <Route path="/contact"><ContactPage /></Route>
       </div>
     </Router>
   );

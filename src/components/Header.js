@@ -14,7 +14,7 @@ export default class Header extends Component {
         <span className="primary-tabs">
           <Link to='/software-development'>Software Development</Link>
           <Link to='/equestrian'>Equestrian</Link>
-          <Link to='/about'>About</Link>
+          <Link to='/contact'>Contact</Link>
         </span>
       </div>
     );
