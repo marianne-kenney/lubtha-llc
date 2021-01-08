@@ -1,19 +1,22 @@
 .main-header {
   height: 100px;
-  border-bottom: 2px solid white;
   background-color: black;
 
-  .main-logo {
-    height: 90px;
+  .header-logo {
+    height: 85px;
     margin: 5px 10px;
+    margin-left: 30px;
   }
 
   .primary-tabs {
-    margin: 40px 20px;
+    padding: 40px 20px;
     float: right;
+    height: 20px;
 
-    a, a:hover, a:focus {
-      color: #2D68DA;
+    a,
+    a:hover,
+    a:focus {
+      color: #2d68da;
       font-weight: bold;
       font-size: 16px;
       text-decoration: none;

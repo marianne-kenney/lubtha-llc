@@ -1,0 +1,51 @@
+.work-experience-component {
+  background-color: rgba(0, 110, 234, 0.5);
+  margin: 30px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+
+  .expand-arrow-open,
+  .expand-arrow-closed {
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    margin: 20px;
+    vertical-align: top;
+  }
+
+  .expand-arrow-open {
+    transform: rotate(90deg);
+  }
+
+  .work-experience-open,
+  .work-experience-closed {
+    margin: 20px;
+    display: inline-block;
+    width: calc(100% - 130px);
+
+    .work-title {
+      margin-right: 30px;
+      display: inline-block;
+      font-weight: bold;
+    }
+
+    .work-description {
+      margin-inline-start: 20px;
+    }
+
+    .work-details {
+      color: #36454f;
+      margin-top: 20px;
+      background-color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  }
+
+  .work-experience-closed {
+    .work-details {
+      display: none;
+    }
+  }
+}
