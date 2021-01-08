@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import '../styles/Home.scss'
 
-export default class Header extends Component {
+export default class HomePage extends Component {
   constructor(props) {
     super(props);
 
@@ -10,10 +10,8 @@ export default class Header extends Component {
   }
 
   render() {
-    return (
-      <div className="home-page">
-        <p>Coming soon!</p>
-      </div>
-    );
+    return (<div className="home-page">
+      <p>Home - Coming soon!</p>
+    </div>);
   }
 }

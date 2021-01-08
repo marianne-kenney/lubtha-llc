@@ -7,7 +7,7 @@ body {
   border: 20px solid black;
   border-top: 10px solid black;
   font-family: Monaco, 'Helvetica Neue', sans-serif;
-  margin: 0;
+  margin: 5px 10px;
   height: 100%;
 
   -webkit-font-smoothing: antialiased;
