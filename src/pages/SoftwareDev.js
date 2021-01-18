@@ -56,7 +56,7 @@ export default class SoftwareDevPage extends Component {
   constructor(props) {
     super(props);
 
-    document.title = "Lúbtha LLC";
+    document.title = "Lúbtha LLC - Software Development";
   }
 
   getExperienceDetails = experience => {

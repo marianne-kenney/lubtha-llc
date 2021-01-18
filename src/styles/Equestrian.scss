@@ -1,4 +1,15 @@
 .equestrian-page {
-  font-size: 20px;
-  text-align: center;
+  font-size: 16px;
+
+  .fence-height,
+  .prize-money {
+    margin: 5px 30px;
+  }
+
+  input[type="number"] {
+    font-family: Monaco;
+    font-size: 16px;
+    width: 60px;
+    margin: 5px;
+  }
 }

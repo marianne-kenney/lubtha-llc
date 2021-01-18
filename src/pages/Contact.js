@@ -6,7 +6,7 @@ export default class ContactPage extends Component {
   constructor(props) {
     super(props);
 
-    document.title = "Lúbtha LLC";
+    document.title = "Lúbtha LLC - Contact";
   }
 
   render() {
