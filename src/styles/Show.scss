@@ -9,13 +9,14 @@
 
     .show-selection-label {
       display: inline-block;
-      width: 60%;
+      width: 40%;
     }
 
+    .show-selection-count,
     .show-selection-total {
       display: inline-block;
       text-align: right;
-      width: 40%;
+      width: 30%;
     }
   }
 

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import AcordionComponent from "./Acordion";
-import "../styles/Show.scss";
+import AcordionComponent from './Acordion';
+import '../styles/Show.scss';
 
 export default class ShowComponent extends Component {
   constructor(props) {
@@ -10,45 +10,52 @@ export default class ShowComponent extends Component {
 
     this.state = {
       name: this.props.name,
-      classes: this.updatedClasses(this.props),
-      fees: this.updatedFees(this.props)
+      classes: this.updatedClasses(this.props, false),
+      fees: this.updatedFees(this.props),
+      classesTotal: 0,
+      feesTotal: 0
     };
+  }
+
+  componentDidMount() {
+    this.updateShow();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.setState({
-        classes: this.updatedClasses(this.props),
-        fees: this.updatedFees(this.props)
+        classes: this.updatedClasses(this.props, true)
       });
     }
   }
 
-  updatedClasses = props => {
-    return this.getDisplayClasses(props).map(item => ({
-      "1st": parseInt(item["1st"]),
-      "2nd": parseInt(item["2nd"]),
-      "3rd": parseInt(item["3rd"]),
-      "4th": parseInt(item["4th"]),
-      "5th": parseInt(item["5th"]),
-      "6th": parseInt(item["6th"]),
-      "7th": parseInt(item["7th"]),
-      "8th": parseInt(item["8th"]),
+  updatedClasses = (props, hasPrev) => {
+    return this.getDisplayClasses(props, hasPrev).map(item => ({
+      '1st': parseInt(item['1st']),
+      '2nd': parseInt(item['2nd']),
+      '3rd': parseInt(item['3rd']),
+      '4th': parseInt(item['4th']),
+      '5th': parseInt(item['5th']),
+      '6th': parseInt(item['6th']),
+      '7th': parseInt(item['7th']),
+      '8th': parseInt(item['8th']),
       className: item.className,
       entryFee: parseInt(item.entryFee),
       fenceHeight: parseFloat(item.fenceHeight),
       prizeMoney: parseInt(item.prizeMoney),
       showName: item.showName,
-      total: parseInt(item.entryFee),
-      quantity: 1,
-      placing: 0,
-      awardMoney: 0
+      total: parseInt(
+        typeof item.total === 'number' ? item.total : item.entryFee
+      ),
+      quantity: typeof item.quantity === 'number' ? item.quantity : 1,
+      placing: item.placing || 0,
+      awardMoney: item.awardMoney || 0
     }));
   };
 
-  getDisplayClasses = props => {
+  getDisplayClasses = (props, hasPrev) => {
     let displayClasses = [];
-    props.classes.forEach(item => {
+    (hasPrev ? this.state.classes : props.classes).forEach(item => {
       if (item.fenceHeight < props.fenceHeight.min) return;
       if (item.fenceHeight > props.fenceHeight.max) return;
       if (item.prizeMoney < props.prizeMoney.min) return;
@@ -61,7 +68,7 @@ export default class ShowComponent extends Component {
   };
 
   updatedFees = props => {
-    const key = props.name.trim().replaceAll(" ", "");
+    const key = props.name.trim().replaceAll(' ', '');
     let showFees = [];
     props.fees.forEach(item => {
       showFees.push({
@@ -75,30 +82,24 @@ export default class ShowComponent extends Component {
   };
 
   onChangeFeeProperty = event => {
-    let { fees } = this.state;
-
-    fees = this.onChangeProperty(fees, event);
-    fees.forEach(item => {
-      item.total = item.quantity * item.amount || 0;
-    });
-
-    this.setState({ fees });
+    const { fees } = this.state;
+    this.setState(
+      { fees: this.onChangeProperty(fees, event) },
+      this.updateShow()
+    );
   };
 
   onChangeClassProperty = event => {
-    let { classes } = this.state;
-
-    classes = this.onChangeProperty(classes, event);
-    classes.forEach(item => {
-      item.total = item.quantity * (item.entryFee - item.awardMoney) || 0;
-    });
-
-    this.setState({ classes });
+    const { classes } = this.state;
+    this.setState(
+      { classes: this.onChangeProperty(classes, event) },
+      this.updateShow()
+    );
   };
 
   onChangeProperty = (stateItem, event) => {
     stateItem[parseInt(event.target.id)][event.target.name] = parseInt(
-      event.target.value ? event.target.value : ""
+      event.target.value ? event.target.value : ''
     );
     return stateItem;
   };
@@ -106,61 +107,56 @@ export default class ShowComponent extends Component {
   onChangeClassAwardMoney = event => {
     let { classes } = this.state;
     let id = parseInt(event.target.id);
-    let placing = parseInt(event.target.value ? event.target.value : "");
+    let placing = parseInt(event.target.value ? event.target.value : '');
 
     const key = placing + this.getPlacingPostfix(placing);
     classes[id].placing = placing;
-    classes[id].awardMoney = key === "0" || !key ? 0 : classes[id][key];
+    classes[id].awardMoney = key === '0' || !key ? 0 : classes[id][key];
 
-    classes.forEach(item => {
-      item.total = item.quantity * (item.entryFee - item.awardMoney) || 0;
-    });
-
-    this.setState({ classes });
+    this.setState({ classes }, this.updateShow());
   };
 
-  feesTotal = () => {
-    let { fees } = this.state;
-    let total = 0;
+  updateShow = () => {
+    const { name, classes, fees } = this.state;
+    let classesTotal = 0;
+    let feesTotal = 0;
+
+    classes.forEach(item => {
+      item.total = item.quantity * (item.entryFee - item.awardMoney);
+      classesTotal += item.total;
+    });
 
     fees.forEach(item => {
-      total += item.total;
+      item.total = item.quantity * item.amount;
+      feesTotal += item.total;
     });
 
-    return total;
-  };
-
-  classesTotal = () => {
-    let { classes } = this.state;
-    let total = 0;
-
-    classes.forEach(item => {
-      total += item.total;
-    });
-
-    return total;
+    this.setState({ classes, fees, classesTotal, feesTotal });
+    this.props.onTotalChange(name, classesTotal + feesTotal);
+    this.props.onCountChange(name, classes.length);
   };
 
   getPlacingPostfix = placing => {
     return placing === 1
-      ? "st"
+      ? 'st'
       : placing === 2
-      ? "nd"
+      ? 'nd'
       : placing === 3
-      ? "rd"
+      ? 'rd'
       : placing > 3
-      ? "th"
-      : "";
+      ? 'th'
+      : '';
   };
 
   render() {
-    const { name, classes, fees } = this.state;
+    const { name, classes, fees, classesTotal, feesTotal } = this.state;
 
     const header = (
       <div className="show-selection">
         <p className="show-selection-label">{name}</p>
+        <p className="show-selection-count">{classes.length} classes</p>
         <p className="show-selection-total">
-          Running Total: ${this.classesTotal() + this.feesTotal()}
+          Running Total: ${classesTotal + feesTotal}
         </p>
       </div>
     );
@@ -171,7 +167,7 @@ export default class ShowComponent extends Component {
           <span className="fee-name">Fee Name</span>
           <span className="fee-amount">Amount</span>
           <span className="fee-quantity">Quantity</span>
-          <span className="fee-total">Total (${this.feesTotal()})</span>
+          <span className="fee-total">Total (${feesTotal})</span>
         </div>
         {fees.map((item, i) => (
           <div className="fee-result">
@@ -217,7 +213,7 @@ export default class ShowComponent extends Component {
           <span className="class-placing">Placing</span>
           <span className="class-entry-fee">Entry Fee</span>
           <span className="class-quantity">Quantity</span>
-          <span className="class-total">Total (${this.classesTotal()})</span>
+          <span className="class-total">Total (${classesTotal})</span>
         </div>
         {classes.map((item, i) => (
           <div className="class-result">
@@ -273,6 +269,7 @@ export default class ShowComponent extends Component {
                 className="class-quantity-input"
                 min="0"
                 max="10"
+                step="1"
                 value={item.quantity}
                 onChange={this.onChangeClassProperty}
               />
@@ -303,5 +300,7 @@ ShowComponent.propTypes = {
   fenceHeight: PropTypes.shape().isRequired,
   prizeMoney: PropTypes.shape().isRequired,
   classes: PropTypes.array.isRequired,
-  fees: PropTypes.array.isRequired
+  fees: PropTypes.array.isRequired,
+  onTotalChange: PropTypes.func.isRequired,
+  onCountChange: PropTypes.func.isRequired
 };
