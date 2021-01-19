@@ -10,7 +10,7 @@ export default class ShowComponent extends Component {
 
     this.state = {
       name: this.props.name,
-      classes: this.updatedClasses(this.props, false),
+      classes: this.updatedClasses(this.props),
       fees: this.updatedFees(this.props),
       classesTotal: 0,
       feesTotal: 0
@@ -24,44 +24,52 @@ export default class ShowComponent extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.setState({
-        classes: this.updatedClasses(this.props, true)
+        classes: this.updatedClasses(this.props)
       });
     }
   }
 
-  updatedClasses = (props, hasPrev) => {
-    return this.getDisplayClasses(props, hasPrev).map(item => ({
-      '1st': parseInt(item['1st']),
-      '2nd': parseInt(item['2nd']),
-      '3rd': parseInt(item['3rd']),
-      '4th': parseInt(item['4th']),
-      '5th': parseInt(item['5th']),
-      '6th': parseInt(item['6th']),
-      '7th': parseInt(item['7th']),
-      '8th': parseInt(item['8th']),
-      className: item.className,
-      entryFee: parseInt(item.entryFee),
-      fenceHeight: parseFloat(item.fenceHeight),
-      prizeMoney: parseInt(item.prizeMoney),
-      showName: item.showName,
-      total: parseInt(
-        typeof item.total === 'number' ? item.total : item.entryFee
-      ),
-      quantity: typeof item.quantity === 'number' ? item.quantity : 1,
-      placing: item.placing || 0,
-      awardMoney: item.awardMoney || 0
-    }));
+  updatedClasses = props => {
+    return this.getDisplayClasses(props).map(item => {
+      return {
+        id: item.id,
+        '1st': parseInt(item['1st']),
+        '2nd': parseInt(item['2nd']),
+        '3rd': parseInt(item['3rd']),
+        '4th': parseInt(item['4th']),
+        '5th': parseInt(item['5th']),
+        '6th': parseInt(item['6th']),
+        '7th': parseInt(item['7th']),
+        '8th': parseInt(item['8th']),
+        className: item.className,
+        entryFee: parseInt(item.entryFee),
+        fenceHeight: parseFloat(item.fenceHeight),
+        prizeMoney: parseInt(item.prizeMoney),
+        showName: item.showName,
+        total: parseInt(
+          typeof item.total === 'number' ? item.total : item.entryFee
+        ),
+        quantity: typeof item.quantity === 'number' ? item.quantity : 1,
+        placing: item.placing || 0,
+        awardMoney: item.awardMoney || 0
+      };
+    });
   };
 
-  getDisplayClasses = (props, hasPrev) => {
+  getDisplayClasses = props => {
+    const { state } = this;
     let displayClasses = [];
-    (hasPrev ? this.state.classes : props.classes).forEach(item => {
+    props.classes.forEach(item => {
       if (item.fenceHeight < props.fenceHeight.min) return;
       if (item.fenceHeight > props.fenceHeight.max) return;
       if (item.prizeMoney < props.prizeMoney.min) return;
       if (item.prizeMoney > props.prizeMoney.max) return;
 
-      displayClasses.push(item);
+      let newItem;
+      if (state) {
+        newItem = state.classes.filter(c => c.id === item.id)[0];
+      }
+      displayClasses.push(newItem ? newItem : item);
     });
 
     return displayClasses;
@@ -131,9 +139,10 @@ export default class ShowComponent extends Component {
       feesTotal += item.total;
     });
 
-    this.setState({ classes, fees, classesTotal, feesTotal });
     this.props.onTotalChange(name, classesTotal + feesTotal);
     this.props.onCountChange(name, classes.length);
+
+    this.setState({ classes, fees, classesTotal, feesTotal });
   };
 
   getPlacingPostfix = placing => {
@@ -170,7 +179,7 @@ export default class ShowComponent extends Component {
           <span className="fee-total">Total (${feesTotal})</span>
         </div>
         {fees.map((item, i) => (
-          <div className="fee-result">
+          <div key={`${i}`} className="fee-result">
             <span className="fee-name">{item.feeName}</span>
             <span className="fee-amount">
               $
@@ -216,7 +225,7 @@ export default class ShowComponent extends Component {
           <span className="class-total">Total (${classesTotal})</span>
         </div>
         {classes.map((item, i) => (
-          <div className="class-result">
+          <div key={`${i}`} className="class-result">
             <span className="class-name">{item.className}</span>
             <span className="class-fence-height">~ {item.fenceHeight}m</span>
             <span className="class-prize-money">

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { DataGrid } from '@material-ui/data-grid';
 import * as d3 from 'd3';
 
 import ShowComponent from '../components/Show';
@@ -13,8 +14,10 @@ export default class EquestrianPage extends Component {
     document.title = 'Lúbtha LLC - Equestrian';
 
     this.state = {
+      securityRequired: true,
       fenceHeight: { min: 0.9, max: 1.2 },
-      prizeMoney: { min: 0, max: 7500 }
+      prizeMoney: { min: 0, max: 7500 },
+      sortBy: ''
     };
   }
 
@@ -40,7 +43,7 @@ export default class EquestrianPage extends Component {
   handleClassesFees(data) {
     let formattedData = [];
 
-    data.forEach(row => {
+    data.forEach((row, i) => {
       Object.keys(row).forEach(key => {
         let formattedItem = row[key]
           .trim()
@@ -50,6 +53,7 @@ export default class EquestrianPage extends Component {
 
         row[key.trim()] = formattedItem;
       });
+      row.id = i;
 
       if (row.showName || row.feeName) formattedData.push(row);
     });
@@ -65,7 +69,26 @@ export default class EquestrianPage extends Component {
   };
 
   onChangeSort = event => {
-    this.setState({ sortBy: event.target.value });
+    let { shows } = this.state;
+    let sortBy = event.target.id;
+    switch (sortBy) {
+      case 'name':
+        shows = shows.sort((a, b) => {
+          let aName = a.name.toUpperCase();
+          let bName = b.name.toUpperCase();
+          return aName < bName ? -1 : aName > bName ? 1 : 0;
+        });
+        break;
+      case 'total':
+        shows = shows.sort((a, b) => a.total - b.total);
+        break;
+      case 'count':
+        shows = shows.sort((a, b) => b.count - a.count);
+        break;
+      default:
+        break;
+    }
+    this.setState({ shows });
   };
 
   onShowTotalChange = (name, total) => {
@@ -80,23 +103,42 @@ export default class EquestrianPage extends Component {
     this.setState({ shows });
   };
 
+  securityBypass = event => {
+    if (event.target.value === 'tommy2021') {
+      this.setState({ securityRequired: false });
+    }
+  };
+
   render() {
     const {
+      securityRequired,
       fenceHeight,
       prizeMoney,
-      sortBy,
       classes,
       shows,
       fees
     } = this.state;
 
+    if (securityRequired) {
+      return (
+        <div className="equestrian-page">
+          <p>
+            Content coming to the public soon!
+            <br />
+            For now, if you have access, enter the password below:
+          </p>
+          <input
+            type="password"
+            placeholder="password"
+            onChange={this.securityBypass}
+          />
+        </div>
+      );
+    }
+
     let showsDisplay;
     if (classes && shows && fees) {
-      let sortedShows = shows;
-      if (sortBy === 'showTotal') {
-        sortedShows = shows.sort((a, b) => a.total - b.total);
-      }
-      showsDisplay = sortedShows.map(show => {
+      showsDisplay = shows.map(show => {
         return (
           <ShowComponent
             key={show.name}
@@ -171,31 +213,31 @@ export default class EquestrianPage extends Component {
             </div>
           </div>
           <div className="sort-by">
-            <p>Sort by: </p>
+            <p>Sort once by: </p>
             <input
-              type="radio"
+              type="button"
+              id="name"
               name="sort-by"
               className="sort-name-input"
-              value="showName"
-              onChange={this.onChangeSort}
+              value="Show Name"
+              onClick={this.onChangeSort}
             />
-            <span className="sort-label">Show Name</span>
             <input
-              type="radio"
+              type="button"
+              id="total"
               name="sort-by"
               className="sort-total-input"
-              value="showTotal"
-              onChange={this.onChangeSort}
+              value="Running Total"
+              onClick={this.onChangeSort}
             />
-            <span className="sort-label">Running Total</span>
             <input
-              type="radio"
+              type="button"
+              id="count"
               name="sort-by"
               className="sort-count-input"
-              value="showCount"
-              onChange={this.onChangeSort}
+              value="Classes Count"
+              onClick={this.onChangeSort}
             />
-            <span className="sort-label">Class Count</span>
           </div>
           {showsDisplay}
         </form>
