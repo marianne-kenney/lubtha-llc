@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import '../styles/Contact.scss'
+import "../styles/Contact.scss";
 
 export default class ContactPage extends Component {
   constructor(props) {
     super(props);
 
-    document.title = 'Lúbtha LLC';
+    document.title = "Lúbtha LLC - Contact";
   }
 
   render() {

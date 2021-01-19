@@ -4,8 +4,8 @@ html {
 }
 
 body {
-  font-family: Monaco, 'Helvetica Neue', sans-serif;
-  margin: 0;
+  font-family: Monaco, "Helvetica Neue", sans-serif;
+  margin: 5px 10px;
   height: 100%;
 
   -webkit-font-smoothing: antialiased;
@@ -13,5 +13,6 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }

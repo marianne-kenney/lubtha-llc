@@ -1,0 +1,17 @@
+.work-experience-component {
+  margin: 30px;
+
+  .work-title {
+    margin-right: 30px;
+    display: inline-block;
+    font-weight: bold;
+  }
+
+  .work-description {
+    margin-inline-start: 20px;
+  }
+
+  .work-details {
+    color: #36454f;
+  }
+}

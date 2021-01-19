@@ -1,0 +1,33 @@
+.acordion-component {
+  background-color: rgba(0, 110, 234, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+
+  .expand-arrow-open,
+  .expand-arrow-closed {
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    margin: 12px 20px;
+    vertical-align: top;
+  }
+
+  .expand-arrow-open {
+    transform: rotate(90deg);
+  }
+
+  .acordion-header,
+  .acordion-content {
+    display: inline-block;
+    width: calc(100% - 130px);
+  }
+
+  .acordion-content {
+    margin: 0 10px 20px 80px;
+    color: #36454f;
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+}
