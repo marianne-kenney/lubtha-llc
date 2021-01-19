@@ -18,15 +18,12 @@
   .sort-total-input,
   .sort-count-input {
     font-size: 14px;
+    font-weight: bold;
     margin-right: 20px;
     padding: 8px 25px;
-    border: 2px #2d68da solid;
-    background-color: white;
+    background-color: rgba(46, 108, 226, 0.8);
+    color: white;
+    border: none;
     border-radius: 5px;
-
-    &:focus {
-      background-color: #2d68da;
-      color: white;
-    }
   }
 }
