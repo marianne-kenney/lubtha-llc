@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import arrow from "../images/arrow.png";
-import "../styles/Acordion.scss";
+import arrow from '../images/arrow.png';
+import '../styles/Acordion.scss';
 
 export default class AcordionComponent extends Component {
   constructor(props) {
@@ -35,7 +35,7 @@ export default class AcordionComponent extends Component {
     return (
       <div className="acordion-component">
         <img
-          className={open ? "expand-arrow-open" : "expand-arrow-closed"}
+          className={open ? 'expand-arrow-open' : 'expand-arrow-closed'}
           src={arrow}
           alt="Expand arrow"
           onClick={this.handleExpand}

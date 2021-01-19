@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import logo from "../images/headerLogo.jpg";
-import "../styles/Header.scss";
+import logo from '../images/headerLogo.jpg';
+import '../styles/Header.scss';
 
 export default class HeaderComponent extends Component {
   render() {

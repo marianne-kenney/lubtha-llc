@@ -139,10 +139,10 @@ export default class ShowComponent extends Component {
       feesTotal += item.total;
     });
 
-    this.props.onTotalChange(name, classesTotal + feesTotal);
-    this.props.onCountChange(name, classes.length);
-
-    this.setState({ classes, fees, classesTotal, feesTotal });
+    this.setState({ classes, fees, classesTotal, feesTotal }, () => {
+      this.props.onTotalChange(name, classesTotal + feesTotal);
+      this.props.onCountChange(name, classes.length);
+    });
   };
 
   getPlacingPostfix = placing => {
