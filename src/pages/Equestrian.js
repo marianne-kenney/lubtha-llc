@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { DataGrid } from '@material-ui/data-grid';
 import * as d3 from 'd3';
 
 import ShowComponent from '../components/Show';

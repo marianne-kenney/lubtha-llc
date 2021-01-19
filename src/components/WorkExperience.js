@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import AcordionComponent from "./Acordion";
-import arrow from "../images/arrow.png";
-import "../styles/WorkExperience.scss";
+import AcordionComponent from './Acordion';
+import '../styles/WorkExperience.scss';
 
 export default class WorkExperienceComponent extends Component {
   constructor(props) {
@@ -51,7 +50,7 @@ WorkExperienceComponent.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     startDate: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
     details: PropTypes.array.isRequired
   }).isRequired
 };
