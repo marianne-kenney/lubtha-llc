@@ -103,7 +103,10 @@ export default class EquestrianPage extends Component {
   };
 
   securityBypass = event => {
-    if (event.target.value === 't') {
+    if (
+      event.target.value === 'tommy2021' ||
+      window.location.href.includes('localhost')
+    ) {
       this.setState({ securityRequired: false });
     }
   };
