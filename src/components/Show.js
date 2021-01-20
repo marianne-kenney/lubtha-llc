@@ -18,12 +18,10 @@ export default class ShowComponent extends Component {
   }
 
   componentDidMount() {
-    console.log('here');
     this.updateShow();
   }
 
   componentDidUpdate(prevProps) {
-    console.log('here');
     if (this.props.refreshNeeded) {
       const { name, feesTotal } = this.state;
       let classesTotal = 0;
