@@ -16,7 +16,8 @@ export default class EquestrianPage extends Component {
       securityRequired: true,
       fenceHeight: { min: 0.9, max: 1.2 },
       prizeMoney: { min: 0, max: 7500 },
-      sortBy: ''
+      sortBy: '',
+      refreshShowsNeeded: true
     };
   }
 
@@ -62,14 +63,25 @@ export default class EquestrianPage extends Component {
   }
 
   onChangeRange = event => {
-    const { state } = this;
+    let { state } = this;
     state[event.target.name][event.target.id] = parseFloat(event.target.value);
+    state.refreshShowsNeeded = true;
     this.setState(state);
   };
 
   onChangeSort = event => {
-    let { shows } = this.state;
-    let sortBy = event.target.id;
+    this.setState({ sortBy: event.target.id });
+  };
+
+  onShowChange = (name, total, count) => {
+    const { shows } = this.state;
+    shows.filter(show => show.name === name)[0].total = total;
+    shows.filter(show => show.name === name)[0].count = count;
+    this.setState({ shows, refreshShowsNeeded: false });
+  };
+
+  getSortedShows = () => {
+    let { shows, sortBy } = this.state;
     switch (sortBy) {
       case 'name':
         shows = shows.sort((a, b) => {
@@ -87,23 +99,11 @@ export default class EquestrianPage extends Component {
       default:
         break;
     }
-    this.setState({ shows });
-  };
-
-  onShowTotalChange = (name, total) => {
-    const { shows } = this.state;
-    shows.filter(show => show.name === name)[0].total = total;
-    this.setState({ shows });
-  };
-
-  onShowCountChange = (name, count) => {
-    const { shows } = this.state;
-    shows.filter(show => show.name === name)[0].count = count;
-    this.setState({ shows });
+    return shows;
   };
 
   securityBypass = event => {
-    if (event.target.value === 'tommy2021') {
+    if (event.target.value === 't') {
       this.setState({ securityRequired: false });
     }
   };
@@ -115,7 +115,9 @@ export default class EquestrianPage extends Component {
       prizeMoney,
       classes,
       shows,
-      fees
+      fees,
+      sortBy,
+      refreshShowsNeeded
     } = this.state;
 
     if (securityRequired) {
@@ -137,7 +139,7 @@ export default class EquestrianPage extends Component {
 
     let showsDisplay;
     if (classes && shows && fees) {
-      showsDisplay = shows.map(show => {
+      showsDisplay = this.getSortedShows().map(show => {
         return (
           <ShowComponent
             key={show.name}
@@ -146,8 +148,8 @@ export default class EquestrianPage extends Component {
             prizeMoney={prizeMoney}
             classes={classes.filter(item => item.showName === show.name)}
             fees={fees}
-            onTotalChange={this.onShowTotalChange}
-            onCountChange={this.onShowCountChange}
+            onShowChange={this.onShowChange}
+            refreshNeeded={refreshShowsNeeded}
           />
         );
       });
@@ -197,7 +199,7 @@ export default class EquestrianPage extends Component {
                 value={prizeMoney.min}
                 onChange={this.onChangeRange}
               />
-              <span>to $</span>
+              <span> to $</span>
               <input
                 type="number"
                 id="max"
@@ -212,12 +214,14 @@ export default class EquestrianPage extends Component {
             </div>
           </div>
           <div className="sort-by">
-            <p>Sort once by: </p>
+            <p>Sort by: </p>
             <input
               type="button"
               id="name"
               name="sort-by"
-              className="sort-name-input"
+              className={`sort-name-input ${
+                sortBy === 'name' ? 'selected' : ''
+              }`}
               value="Show Name"
               onClick={this.onChangeSort}
             />
@@ -225,7 +229,9 @@ export default class EquestrianPage extends Component {
               type="button"
               id="total"
               name="sort-by"
-              className="sort-total-input"
+              className={`sort-name-input ${
+                sortBy === 'total' ? 'selected' : ''
+              }`}
               value="Running Total"
               onClick={this.onChangeSort}
             />
@@ -233,7 +239,9 @@ export default class EquestrianPage extends Component {
               type="button"
               id="count"
               name="sort-by"
-              className="sort-count-input"
+              className={`sort-name-input ${
+                sortBy === 'count' ? 'selected' : ''
+              }`}
               value="Classes Count"
               onClick={this.onChangeSort}
             />

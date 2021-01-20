@@ -18,14 +18,32 @@ export default class ShowComponent extends Component {
   }
 
   componentDidMount() {
+    console.log('here');
     this.updateShow();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
-      this.setState({
-        classes: this.updatedClasses(this.props)
+    console.log('here');
+    if (this.props.refreshNeeded) {
+      const { name, feesTotal } = this.state;
+      let classesTotal = 0;
+
+      let classes = this.updatedClasses(this.props);
+      classes.forEach(item => {
+        item.total = item.quantity * (item.entryFee - item.awardMoney);
+        classesTotal += item.total;
       });
+
+      this.setState(
+        { classes, classesTotal, feesTotal, refreshNeeded: false },
+        () => {
+          this.props.onShowChange(
+            name,
+            classesTotal + feesTotal,
+            classes.length
+          );
+        }
+      );
     }
   }
 
@@ -124,8 +142,9 @@ export default class ShowComponent extends Component {
     this.setState({ classes }, this.updateShow());
   };
 
-  updateShow = () => {
-    const { name, classes, fees } = this.state;
+  updateShow = updatedClasses => {
+    let { name, classes, fees } = this.state;
+    classes = updatedClasses || classes;
     let classesTotal = 0;
     let feesTotal = 0;
 
@@ -140,8 +159,7 @@ export default class ShowComponent extends Component {
     });
 
     this.setState({ classes, fees, classesTotal, feesTotal }, () => {
-      this.props.onTotalChange(name, classesTotal + feesTotal);
-      this.props.onCountChange(name, classes.length);
+      this.props.onShowChange(name, classesTotal + feesTotal, classes.length);
     });
   };
 
@@ -310,6 +328,5 @@ ShowComponent.propTypes = {
   prizeMoney: PropTypes.shape().isRequired,
   classes: PropTypes.array.isRequired,
   fees: PropTypes.array.isRequired,
-  onTotalChange: PropTypes.func.isRequired,
-  onCountChange: PropTypes.func.isRequired
+  onShowChange: PropTypes.func.isRequired
 };
