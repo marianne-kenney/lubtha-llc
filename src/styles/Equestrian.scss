@@ -1,13 +1,14 @@
 .equestrian-page {
+  margin: 5px 20px;
   display: inline-block;
+  height: 100%;
   width: 96%;
-  margin: 10px 20px;
   font-size: 16px;
 
   .filters,
   .sort-by {
-    display: inline-block;
-    margin: 5px 20px;
+    margin: 15px 30px;
+    margin-bottom: 0;
   }
 
   input[type='number'] {
@@ -16,21 +17,45 @@
     margin: 5px;
   }
 
-  .sort-name-input,
-  .sort-total-input,
-  .sort-count-input {
-    font-size: 14px;
-    font-weight: bold;
-    margin-right: 20px;
-    padding: 8px 12px;
-    background-color: rgb(245, 245, 245);
-    color: rgba(46, 108, 226, 0.9);
-    border: none;
-    border-radius: 5px;
-  }
+  .sort-by {
+    padding-right: 30px;
 
-  .selected {
-    background-color: rgba(46, 108, 226, 0.8);
-    color: white;
+    span {
+      display: inline-block;
+      width: 70px;
+    }
+
+    .sort-by-buttons {
+      display: inline-block;
+      width: calc(100% - 70px);
+
+      .sort-name,
+      .sort-count,
+      .sort-total {
+        display: inline-block;
+        width: 30%;
+        text-align: right;
+
+        .sort-input {
+          font-size: 14px;
+          font-weight: bold;
+          padding: 8px 12px;
+          background-color: rgb(245, 245, 245);
+          color: rgba(46, 108, 226, 0.9);
+          border: none;
+          border-radius: 5px;
+        }
+
+        .selected {
+          background-color: rgba(46, 108, 226, 0.8);
+          color: white;
+        }
+      }
+
+      .sort-name {
+        width: 40%;
+        text-align: left;
+      }
+    }
   }
 }

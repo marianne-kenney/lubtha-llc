@@ -9,23 +9,23 @@ body {
     'Helvetica', 'Arial', sans-serif;
   margin: 0;
   height: 100%;
+  border-left: 5px solid black;
+  border-right: 5px solid rgb(46, 108, 226);
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.lubtha {
 }
 
 input {
   font-family: 'Trebuchet MS';
 }
 
-#root {
-  height: 100%;
-  display: grid;
-}
-
-.lubtha {
-  border-left: 5px solid black;
-  border-right: 5px solid rgb(46, 108, 226);
+h2 {
+  margin-left: 10px;
+  color: #36454f;
 }
 
 code {

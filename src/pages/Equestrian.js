@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3';
 
 import ShowComponent from '../components/Show';
-import classesCsv from '../data/classes-01-10-21.csv';
-import feesCsv from '../data/fees-01-10-21.csv';
+import classesJSON from '../data/classes-01-19-21.json';
+import feesJSON from '../data/fees-01-19-21.json';
 import '../styles/Equestrian.scss';
 
 export default class EquestrianPage extends Component {
@@ -22,44 +21,15 @@ export default class EquestrianPage extends Component {
   }
 
   componentDidMount() {
-    d3.csv(classesCsv).then(data => {
-      const classes = this.handleClassesFees(Object.values(data));
-      this.setState({ classes });
+    const classes = classesJSON;
+    this.setState({ classes, fees: feesJSON });
 
-      let shows = [];
-      classes.forEach(item => {
-        if (!shows.filter(show => show.name === item.showName).length)
-          shows.push({ name: item.showName, total: 0, count: 0 });
-      });
-      this.setState({ shows });
+    let shows = [];
+    classes.forEach(item => {
+      if (!shows.filter(show => show.name === item.showName).length)
+        shows.push({ name: item.showName, total: 0, count: 0 });
     });
-
-    d3.csv(feesCsv).then(data => {
-      const fees = this.handleClassesFees(Object.values(data));
-      this.setState({ fees });
-    });
-  }
-
-  handleClassesFees(data) {
-    let formattedData = [];
-
-    data.forEach((row, i) => {
-      Object.keys(row).forEach(key => {
-        let formattedItem = row[key]
-          .trim()
-          .replaceAll('$', '')
-          .replaceAll(',', '')
-          .replaceAll('-', '0');
-
-        row[key.trim()] = formattedItem;
-      });
-      row.id = i;
-
-      if (row.showName || row.feeName) formattedData.push(row);
-    });
-
-    formattedData.splice(formattedData.length - 1, formattedData.length);
-    return formattedData;
+    this.setState({ shows });
   }
 
   onChangeRange = event => {
@@ -160,6 +130,7 @@ export default class EquestrianPage extends Component {
 
     return (
       <div className="equestrian-page">
+        <h2>Equestrian Competition Data</h2>
         <form>
           <div className="filters">
             <div className="fence-height">
@@ -217,37 +188,45 @@ export default class EquestrianPage extends Component {
             </div>
           </div>
           <div className="sort-by">
-            <p>Sort by: </p>
-            <input
-              type="button"
-              id="name"
-              name="sort-by"
-              className={`sort-name-input ${
-                sortBy === 'name' ? 'selected' : ''
-              }`}
-              value="Show Name"
-              onClick={this.onChangeSort}
-            />
-            <input
-              type="button"
-              id="total"
-              name="sort-by"
-              className={`sort-name-input ${
-                sortBy === 'total' ? 'selected' : ''
-              }`}
-              value="Running Total"
-              onClick={this.onChangeSort}
-            />
-            <input
-              type="button"
-              id="count"
-              name="sort-by"
-              className={`sort-name-input ${
-                sortBy === 'count' ? 'selected' : ''
-              }`}
-              value="Classes Count"
-              onClick={this.onChangeSort}
-            />
+            <span>Sort by: </span>
+            <div className="sort-by-buttons">
+              <div className="sort-name">
+                <input
+                  type="button"
+                  id="name"
+                  name="sort-by"
+                  className={`sort-input ${
+                    sortBy === 'name' ? 'selected' : ''
+                  }`}
+                  value="Show Name"
+                  onClick={this.onChangeSort}
+                />
+              </div>
+              <div className="sort-count">
+                <input
+                  type="button"
+                  id="count"
+                  name="sort-by"
+                  className={`sort-input ${
+                    sortBy === 'count' ? 'selected' : ''
+                  }`}
+                  value="Classes Count"
+                  onClick={this.onChangeSort}
+                />
+              </div>
+              <div className="sort-total">
+                <input
+                  type="button"
+                  id="total"
+                  name="sort-by"
+                  className={`sort-input ${
+                    sortBy === 'total' ? 'selected' : ''
+                  }`}
+                  value="Running Total"
+                  onClick={this.onChangeSort}
+                />
+              </div>
+            </div>
           </div>
           {showsDisplay}
         </form>

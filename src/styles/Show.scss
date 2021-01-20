@@ -1,6 +1,10 @@
 .show-component {
   margin: 20px;
 
+  input {
+    color: #36454f;
+  }
+
   .show-selection {
     font-weight: bold;
     font-size: 16px;
@@ -16,7 +20,8 @@
     .show-selection-total {
       display: inline-block;
       text-align: right;
-      width: 30%;
+      width: calc(30% - 20px);
+      margin-right: 20px;
     }
   }
 

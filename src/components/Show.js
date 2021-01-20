@@ -179,10 +179,8 @@ export default class ShowComponent extends Component {
     const header = (
       <div className="show-selection">
         <p className="show-selection-label">{name}</p>
-        <p className="show-selection-count">{classes.length} classes</p>
-        <p className="show-selection-total">
-          Running Total: ${classesTotal + feesTotal}
-        </p>
+        <p className="show-selection-count">{classes.length}</p>
+        <p className="show-selection-total">${classesTotal + feesTotal}</p>
       </div>
     );
 
